@@ -1,51 +1,10 @@
-<!DOCTYPE html>
-<html lang="en">
+<!-- index.html -->
+<html>
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>YouTube Transcription Retrieval</title>
+    <title>My Web Page</title>
 </head>
 <body>
-<h1>YouTube Transcription Retrieval</h1>
-<p>Enter YouTube Video ID:</p>
-<input type="text" id="videoIdInput">
-<button onclick="getTranscription()">Get Transcription</button>
-<div id="transcriptionResult"></div>
-
-<script>
-// Function to fetch transcription by video ID
-function getTranscription() {
-  const videoId = document.getElementById('videoIdInput').value;
-  const apiKey = 'YOUR_YOUTUBE_API_KEY'; // Replace with your YouTube API key
-
-  // Make sure a video ID is provided
-  if (!videoId) {
-    alert('Please enter a YouTube video ID');
-    return;
-  }
-
-  // Make request to YouTube Data API
-  fetch(`https://www.googleapis.com/youtube/v3/videos?part=snippet&id=${videoId}&key=${apiKey}`)
-    .then(response => response.json())
-    .then(data => {
-      if (data.items.length === 0) {
-        throw new Error('Video not found');
-      }
-      const videoTitle = data.items[0].snippet.title;
-      return fetch(`https://www.youtube.com/api/timedtext?v=${videoId}&lang=en`);
-    })
-    .then(response => response.text())
-    .then(transcription => {
-      if (!transcription) {
-        throw new Error('Transcription not found');
-      }
-      document.getElementById('transcriptionResult').textContent = transcription;
-    })
-    .catch(error => {
-      console.error('Error:', error);
-      document.getElementById('transcriptionResult').textContent = 'Error retrieving transcription';
-    });
-}
-</script>
+    <script src="file1.js"></script>
+    <script src="file2.js"></script>
 </body>
 </html>

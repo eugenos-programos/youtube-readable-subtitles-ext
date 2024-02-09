@@ -1,50 +1,43 @@
-// Function to retrieve YouTube video transcription by video ID
-function getVideoTranscription(videoId, apiKey) {
-  // Constructing the request URL
-  const url = `https://www.googleapis.com/youtube/v3/videos?part=snippet&id=${videoId}&key=${apiKey}`;
 
-  // Making a GET request to the YouTube Data API
-  fetch(url)
-      .then(response => {
-          // Checking if the response is successful
-          if (!response.ok) {
-              throw new Error('Network response was not ok');
-          }
-          return response.json();
-      })
-      .then(data => {
-          // Extracting the video title
-          const videoTitle = data.items[0].snippet.title;
-          console.log(`Video Title: ${videoTitle}`);
 
-          // Extracting the video's automatic caption track ID
-          const captionTrackId = data.items[0].snippet.captions.default;
-          if (!captionTrackId) {
-              console.log("This video does not have automatic captions available.");
-              return;
-          }
-
-          // Requesting the captions using the caption track ID
-          return fetch(`https://www.googleapis.com/youtube/v3/captions/${captionTrackId}?key=${apiKey}`);
-      })
-      .then(response => {
-          if (!response.ok) {
-              throw new Error('Network response was not ok');
-          }
-          return response.text();
-      })
-      .then(text => {
-          // Printing the transcription
-          console.log("Transcription:\n", text);
-      })
-      .catch(error => {
-          console.error('There was a problem with the request:', error);
-      });
+async function query(data) {
+	const response = await fetch(
+		"https://api-inference.huggingface.co/models/unikei/distilbert-base-re-punctuate",
+		{
+			headers: { Authorization: "Bearer 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" },
+			method: "POST",
+			body: JSON.stringify(data),
+		}
+	);
+	const result = await response.json();
+	return result;
 }
 
-const apiKey = 'AIzaSyDHyQkcF7vB_8aqYJXJtwIW_ORQ4sql-zA';
-// Replace 'VIDEO_ID' with the ID of the YouTube video you want to retrieve the transcription for
-const videoId = '8I3Tu9x9YA8';
+export function normalize_subtitles(subtitles) {
+    subtitles = clean_subtitles(subtitles);
+    query({"inputs": subtitles}).then((response) => {
+        let result = '';
+        for (let i = 0; i < response.length; i++) {
+            let curr_entity_group = response[i]['entity_group'];
+            let curr_word = response[i]['word'];
+            if (curr_entity_group.startsWith('Upper')) {
+                result += curr_word.charAt(0).toUpperCase() + curr_word.slice(1);
+            }
+            else if (curr_entity_group.startsWith('lower')){
+                result += curr_word.charAt(0).toLowerCase() + curr_word.slice(1);
+            }
+            if (!curr_entity_group.endsWith('_')) {
+                result += curr_entity_group.charAt(curr_entity_group.length - 1);
+            }
+            result += ' ';
+        }
+        return result;
+    }).catch((error) => {
+        console.error('Error:', error);
+    });
+}
 
-// Calling the function to retrieve the transcription
-getVideoTranscription(videoId, apiKey);
+export function clean_subtitles(subtitles){
+    let cleaned_subtitles = subtitles.toString().replace(/\([^)]*\)/g, '');
+    return cleaned_subtitles;
+}

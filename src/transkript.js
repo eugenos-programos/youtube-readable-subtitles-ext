@@ -1,10 +1,13 @@
 import { YoutubeLoader } from "langchain/document_loaders/web/youtube";
 
-const loader = YoutubeLoader.createFromUrl("https://www.youtube.com/watch?v=-BwUyTrU9fo", {
-  language: "en",
-  addVideoInfo: true,
-});
 
-const docs = await loader.load();
+export async function extract_subtitles(video_url)
+{
+  const loader = YoutubeLoader.createFromUrl(video_url, {
+    language: "en",
+    addVideoInfo: true,
+  });
 
-console.log(docs);
+  const docs = await loader.load();
+  return docs[0].pageContent;
+}

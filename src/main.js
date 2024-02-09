@@ -1,32 +1,8 @@
-async function query(data) {
-	const response = await fetch(
-		"https://api-inference.huggingface.co/models/unikei/distilbert-base-re-punctuate",
-		{
-			headers: { Authorization: "Bearer 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" },
-			method: "POST",
-			body: JSON.stringify(data),
-		}
-	);
-	const result = await response.json();
-	return result;
-}
+import { extract_subtitles } from "./transkript.js";
+import { normalize_subtitles } from "./utils.js";
 
-query({"inputs": "My name is Sarah Jessica Parker but you can call me Jessica"}).then((response) => {
-  result = '';
-  for (let i = 0; i < response.length; i++) {
-    console.log(response[i])
-    curr_entity_group = response[i]['entity_group'];
-    curr_word = response[i]['word'];
-    if (curr_entity_group.startsWith('Upper')) {
-      result += curr_word.charAt(0).toUpperCase() + curr_word.slice(1);
-    }
-    else if (curr_entity_group.startsWith('lower')){
-      result += curr_word.charAt(0).toLowerCase() + curr_word.slice(1);
-    }
-    if (!curr_entity_group.endsWith('_')) {
-      result += curr_entity_group.charAt(curr_entity_group.length - 1);
-    }
-    result += ' ';
-  }
-  console.log(result);
-});
+
+var url = "https://www.youtube.com/watch?v=-BwUyTrU9fo";
+var subtitles = await extract_subtitles(url);
+var normalized_subtitles = normalize_subtitles(subtitles);
+console.log(normalized_subtitles);
