@@ -1,0 +1,7 @@
+{
+  "dependencies": {
+    "langchain": "^0.1.17",
+    "youtube-transcript": "^1.0.6"
+  },
+  "type": "module"
+}
