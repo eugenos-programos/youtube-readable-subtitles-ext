@@ -1,3 +1,21 @@
+import { extractSubtitles } from "./src/transkript";
+import { normalizeSubtitles } from "./src/utils";
+
+
+async function fetchAndNormalizeSubtitles(url)
+{
+    try
+    {
+        const subtitles = await extractSubtitles(url);
+        const result = await normalizeSubtitles(subtitles);
+        console.log(`${result}`);
+    }
+    catch (error)
+    {
+        console.error('An error occured', error);
+    }
+}
+
 document.addEventListener("DOMContentLoaded", function() {
     var button = document.getElementById("myButton");
     var urlInput = document.getElementById("urlInput");
