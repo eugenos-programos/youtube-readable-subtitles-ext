@@ -1,4 +1,4 @@
-import { YoutubeLoader } from "langchain/document_loaders/web/youtube";
+import { YoutubeLoader } from "../langchain/document_loaders/web/youtube";
 
 
 export async function extractSubtitles(video_url)
