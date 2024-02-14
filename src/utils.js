@@ -3,9 +3,9 @@ import { callPunctuationModel } from "./transformer.js";
 
 const inputTextLength = 1500;
 
-export async function normalize_subtitles(subtitles) 
+export async function normalizeSubtitles(subtitles) 
 {
-    subtitles = clean_subtitles(subtitles);
+    subtitles = cleanSubtitles(subtitles);
     let result = '';
     do
     {
@@ -59,7 +59,7 @@ function capitalizeAfterDot(text) {
     });
 }
 
-function clean_subtitles(subtitles)
+function cleanSubtitles(subtitles)
 {
     let cleaned_subtitles = subtitles.toString().replace(/\([^)]*\)/g, '');
     return cleaned_subtitles;
