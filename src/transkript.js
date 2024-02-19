@@ -1,7 +1,7 @@
-import { YoutubeLoader } from "langchain/document_loaders/web/youtube";
+import { YoutubeLoader } from "../langchain/document_loaders/web/youtube";
 
 
-export async function extract_subtitles(video_url)
+export async function extractSubtitles(video_url)
 {
   const loader = YoutubeLoader.createFromUrl(video_url, {
     language: "en",
