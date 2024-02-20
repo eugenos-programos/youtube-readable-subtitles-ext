@@ -2,7 +2,7 @@ async function query(data) {
 	const response = await fetch(
 		"https://api-inference.huggingface.co/models/oliverguhr/fullstop-punctuation-multilang-large",
 		{
-			headers: { Authorization: "Bearer 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" },
+			headers: { Authorization: "Bearer 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" },
 			method: "POST",
 			body: JSON.stringify(data),
 		}
